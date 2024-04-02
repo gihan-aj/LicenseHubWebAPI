@@ -4,8 +4,7 @@ namespace LicenseHubWebAPI.Domain.DTOs
 {
     public class UserResponseDTO
     {
-        public required string UserEmail { get; set; }
-        public string Username { get; set; } = string.Empty;
-        public string SessionToken { get; set; } = string.Empty;
+        public required string UserName { get; set; }
+        public string Name { get; set; } = string.Empty;
     }
 }

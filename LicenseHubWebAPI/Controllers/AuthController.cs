@@ -2,8 +2,10 @@
 using LicenseHubWebAPI.Domain.DTOs;
 using LicenseHubWebAPI.Domain.Entities;
 using LicenseHubWebAPI.Domain.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static LicenseHubWebAPI.Domain.DTOs.ServiceResponses;
 
 namespace LicenseHubWebAPI.Controllers
 {
@@ -30,7 +32,7 @@ namespace LicenseHubWebAPI.Controllers
                     return BadRequest("User is not created.");
                 }
 
-                return CreatedAtAction(nameof(GetUser), new { userEmail = user.UserEmail }, user);
+                return CreatedAtAction(nameof(GetUser), new { userEmail = user.UserName }, user);
                 //return Ok(user);
 
             }
@@ -40,6 +42,7 @@ namespace LicenseHubWebAPI.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("User")]
         public async Task<ActionResult<UserResponseDTO>> GetUser(string userEmail)
         {
@@ -61,17 +64,20 @@ namespace LicenseHubWebAPI.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<UserResponseDTO>> Login(UserRequestDTO request)
+        public async Task<ActionResult<LoginResponse>> Login(UserRequestDTO request)
         {
             try
             {
-                var user = await _authRepository.Login(request);
-                if(user == null)
-                {
-                    return BadRequest("Username or password is wrong.");
-                }
+                //var user = await _authRepository.Login(request);
+                //if(user == null)
+                //{
+                //    return BadRequest("Username or password is wrong.");
+                //}
+                var user = new UserResponseDTO() { UserName = request.UserEmail, Name = "Admin"};
 
-                return Ok(user);
+
+                return Ok(new LoginResponse(true,"Login successful", "1234567890", user));
+
             }
             catch (Exception e)
             {

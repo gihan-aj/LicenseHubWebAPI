@@ -47,9 +47,8 @@ namespace LicenseHubWebAPI.DataAccess.Implementation
 
             var createdUser = new UserResponseDTO()
             {
-                Username = newUser.Username,
-                UserEmail = newUser.UserEmail,
-                SessionToken = sessionToken
+                Name = newUser.Username,
+                UserName = newUser.UserEmail,
             };
 
             _loggedUser = createdUser;
@@ -67,7 +66,7 @@ namespace LicenseHubWebAPI.DataAccess.Implementation
 
             var response = new UserResponseDTO() 
             { 
-                Username = user.Username, UserEmail = user.UserEmail 
+                Name = user.Username, UserName = user.UserEmail 
             };
 
             return response;
@@ -91,33 +90,13 @@ namespace LicenseHubWebAPI.DataAccess.Implementation
 
             var userDetails = new UserResponseDTO()
             {
-                Username = user.Username,
-                UserEmail = user.UserEmail,
-                SessionToken = sessionToken
+                Name = user.Username,
+                UserName = user.UserEmail,
             };
 
             _loggedUser = userDetails;
 
             return userDetails;
-        }
-
-        public bool VerifyToken(string token)
-        {
-            if(_loggedUser == null)
-            {
-                return false;
-            }
-            else
-            {
-                if(_loggedUser.SessionToken == token)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
         }
 
         private async Task<User?> GetSingleUser(string userEmail)
